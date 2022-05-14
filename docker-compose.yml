@@ -73,14 +73,17 @@ services:
 
   nginx:
     image: nginx:latest
+    container_name: owncloud_nginx
     ports:
       # - "80:80"
       - ${NGINX_PORT}:8080
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
 
   certbot:
     image: certbot/certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+    container_name: owncloud_certbot
+    
+      
