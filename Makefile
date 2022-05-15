@@ -1,3 +1,6 @@
+init:
+	bash ./init-letsencrypt.sh
+
 clean:
 	docker-compose down
 	sudo rm -rf files/*

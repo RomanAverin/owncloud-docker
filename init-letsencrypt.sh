@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=($FQDN_NAME)
+domains=(cloud.cly.pw)
 rsa_key_size=4096
 data_path="./certbot"
 email=$LETSENCRYPT_EMAIL # Adding a valid address is strongly recommended
@@ -37,10 +37,8 @@ docker-compose run --rm --entrypoint "\
     -subj '/CN=localhost'" certbot
 echo
 
-
 echo "### Starting nginx ..."
 docker-compose up --force-recreate -d nginx
-#docker run --name init-certbot-nginx -v ${pwd}/nginx/certbot.conf:/etc/nginx/conf.d/certbot.conf:ro -d nginx 
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
@@ -77,5 +75,7 @@ docker-compose run --rm --entrypoint "\
     --force-renewal" certbot
 echo
 
-echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload
+echo "### Restart nginx ..."
+docker-compose restart owncloud_nginx
+echo
+
